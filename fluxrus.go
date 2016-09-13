@@ -77,7 +77,7 @@ func New(url, db, measurement string, opts ...Option) (*InfluxHook, error) {
 			err := hook.client.Write(batch)
 			hook.setError(err)
 
-			// only clear the buffer if all data is written to sthe server
+			// only clear the buffer if all data is written to the server
 			if err == nil {
 				batch, err = influx.NewBatchPoints(influx.BatchPointsConfig{
 					Database:  hook.database,
