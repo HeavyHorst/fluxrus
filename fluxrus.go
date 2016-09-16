@@ -110,8 +110,8 @@ func New(url, db, measurement string, opts ...Option) (*InfluxHook, error) {
 }
 
 func (h *InfluxHook) Close() {
-	close(h.batchChan)
 	h.flushChan <- struct{}{}
+	close(h.batchChan)
 	<-h.flushed
 }
 
