@@ -30,6 +30,18 @@ func (h *InfluxHook) setError(e error) {
 	h.errLock.Unlock()
 }
 
+func ensureDBExists(client influx.Client, db string) error {
+	response, err := client.Query(influx.Query{
+		Command:  fmt.Sprintf("CREATE DATABASE %s", db),
+		Database: db,
+	})
+	if err != nil {
+		return err
+	}
+
+	return response.Error()
+}
+
 func New(url, db, measurement string, opts ...Option) (*InfluxHook, error) {
 	hook := &InfluxHook{
 		database:      db,
@@ -56,6 +68,9 @@ func New(url, db, measurement string, opts ...Option) (*InfluxHook, error) {
 			return nil, err
 		}
 		hook.client = influxClient
+	}
+	if err := ensureDBExists(hook.client, db); err != nil {
+		return nil, err
 	}
 
 	hook.batchChan = make(chan *influx.Point, hook.batchSize)
