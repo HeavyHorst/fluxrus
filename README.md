@@ -4,12 +4,12 @@ fluxrus
 
 usage
 ---
-###Installation
+### Installation
 ```
 go get github.com/HeavyHorst/fluxrus
 ```
 
-###Example
+### Example
 ```go
 import (
     "github.com/HeavyHorst/fluxrus"
@@ -28,10 +28,10 @@ func main() {
 
 Details
 ---
-###Buffer
+### Buffer
 All log messages are buffered by default to increase the performance. You need to run hook.Close() on program exit to get sure that all messages are written to the database.
 
-###Configuration
+### Configuration
 The constructor takes some optional configuration options:
 
  1. WithBatchInterval(int):  flush the buffer at the given interval in seconds. (default is 5s)
