@@ -11,6 +11,7 @@ import (
 
 type InfluxHook struct {
 	client        influx.Client
+	createDB      bool
 	database      string
 	measurement   string
 	tags          []string
@@ -69,8 +70,10 @@ func New(url, db, measurement string, opts ...Option) (*InfluxHook, error) {
 		}
 		hook.client = influxClient
 	}
-	if err := ensureDBExists(hook.client, db); err != nil {
-		return nil, err
+	if hook.createDB {
+		if err := ensureDBExists(hook.client, db); err != nil {
+			return nil, err
+		}
 	}
 
 	hook.batchChan = make(chan *influx.Point, hook.batchSize)

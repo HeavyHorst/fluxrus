@@ -43,3 +43,9 @@ func WithClient(c influx.Client) Option {
 		o.client = c
 	}
 }
+
+func CreateDBIfNotExist() Option {
+	return func(o *InfluxHook) {
+		o.createDB = true
+	}
+}
